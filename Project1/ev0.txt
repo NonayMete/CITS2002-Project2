@@ -1,0 +1,7 @@
+#
+# The simplest event sequence, a single process exits immediately
+#
+1	exit
+#
+# with:		./pipesim  thisfile  1000  2000
+#		timetaken 5

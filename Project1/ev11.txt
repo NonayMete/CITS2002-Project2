@@ -1,0 +1,15 @@
+#
+# The initial process creates a pipe, forks a child process,
+# the parent writes more data to the pipe than will fit in it,
+# and the child must occupy several turns on the CPU to read it all in.
+#
+1       pipe            1
+1       fork            2
+1       writepipe       1       10000
+2       readpipe        1       5000
+2       readpipe        1       5000
+1       exit
+2       exit
+#
+# with:         ./pipesim  thisfile  1000  4096
+#               timetaken 20145

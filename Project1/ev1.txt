@@ -1,0 +1,8 @@
+#
+# A single process computes (for less than the timequantum), then exits
+#
+1	compute		600
+1	exit
+#
+# with:		./pipesim  thisfile  1000  2000
+#		timetaken 615

@@ -1,0 +1,12 @@
+#
+# The initial (parent) process forks, creating a new (child) process
+# and then each process alternates on the CPU before exiting
+#
+1	fork		2
+1	compute		1111
+2	compute		2222
+1	exit
+2	exit
+#
+# with:		./pipesim  thisfile  1000  2000
+#		timetaken 3413
