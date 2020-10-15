@@ -1,15 +1,14 @@
-PROJECT =  mergetars
-HEADERS =  $(PROJECT).h
-OBJ     =  mergetars.o fileop.o tarop.o
+CC=cc
+CFLAGS=-Wall -Werror -std=c99
+DEPS = mergetars.h
+NAME = mergetars.c
+OTHER = fileop.c tarop.c
 
-CC	= cc
-CFLAGS	= -std=c99 -Wall -Werror
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(PROJECT) : $(OBJ)
-	$(CC) $(CFLAGS) -o $(PROJECT) $(OBJ)
-
-%.o : %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $<
+mergetars: $(NAME) $(OTHER)
+	$(CC) $(CFLAGS) $(NAME) -o $@
 
 clean:
-	rm -f $(PROJECT) $(OBJ)
+	rm -f $(NAME) f?
