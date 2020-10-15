@@ -22,7 +22,7 @@ void move_file(char *in_file, char *out_file) {
         printf("didn't fork, error occured\n");
         exit(EXIT_FAILURE);
     } else if(pid == 0) {
-        printf("Moving file %s to %s\n", infile, outfile);
+        //printf("Moving file %s to %s\n", infile, outfile);
         char *args[] = {"mv", "-v", infile, outfile,  NULL};
         //need to check 'z'
         execvp(args[0], args);
@@ -36,7 +36,7 @@ void move_file(char *in_file, char *out_file) {
 
 
 
-void file_attributes(char *filename) {
+struct stat file_attributes(char *filename) {
     struct stat stat_buffer;
     printf("testing attributes of: %s\n", filename);
     if(stat(filename, &stat_buffer) != 0) { // can we 'stat' the file's attributes?
@@ -53,13 +53,27 @@ void file_attributes(char *filename) {
     else if( S_ISDIR( stat_buffer.st_mode )) {
             printf( "%s is a directory\n", filename );
     }
+    return stat_buffer;
 }
 
 
 //compares two files and outputs which one should take priority
 char *compare_files(char *file1_, char *file2_) {
-    file_attributes(file1_);
-    file_attributes(file2_);
+    struct stat file1 = file_attributes(file1_);
+    struct stat file2 = file_attributes(file2_);
+    if(ctime(&file1.st_mtime) > ctime(&file2.st_mtime)) {
+        return file1_;
+    } else if(ctime(&file1.st_mtime) < ctime(&file2.st_mtime)) {
+        return file2_;
+    }
+
+    if((int)file1.st_size > (int)file2.st_size) {
+        return file1_;
+    } else if ((int)file1.st_size < (int)file2.st_size) {
+        return file2_;
+    }
+
+    return file1_;
 }
 
 // void list_directory(char *dirname)
@@ -126,21 +140,25 @@ void merge_directories(char *dir_name, char *out_file, char *parent_file)
             merge_directories(fullpath, outfile, parent);
         }
         else if( S_ISREG( stat_buffer.st_mode )) {
-            printf( "%s is a regular file\n", fullpath );
+            //printf( "%s is a regular file\n", fullpath );
 
             //check if file exists
             char checkfile[MAXPATHLEN];
             sprintf(checkfile, "%s/%s%s", outfile, parent_file, dp->d_name);
-            printf("checkfile: %s\n", checkfile);
+            //printf("checkfile: %s\n", checkfile);
+            char newfile[MAXPATHLEN];
+            sprintf(newfile, "%s/%s", outfile, parent_file);
             if(access(checkfile, F_OK) != 0) {
                 //if not move the file there
-                char newfile[MAXPATHLEN];
-                sprintf(newfile, "%s/%s", outfile, parent_file);
                 move_file(fullpath, newfile);
             } else { 
                 //if it does exist then preform checks to see which one wins
                 printf("%s already exists not moving\n", checkfile);
-                compare_files(checkfile, fullpath);
+                char *pref_file = malloc(MAXPATHLEN);
+                pref_file = compare_files(checkfile, fullpath);
+                move_file(pref_file, newfile);
+                printf("PREF FILE: %s\n", pref_file);
+                printf("\n");
             }
         }
         else {
