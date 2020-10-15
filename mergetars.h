@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/types.h> 
 #include <sys/wait.h>
+ #include <sys/param.h>
 
 #include "cleanup.c"
 #include "findfiles.c"
