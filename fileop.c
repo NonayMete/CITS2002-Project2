@@ -59,7 +59,7 @@ void file_attributes(char *filename) {
 //     closedir(dirp);
 // }
 
-void list_directory(char *dir_name, char *out_file)
+void merge_directories(char *dir_name, char *out_file)
 {
     char *dirname = malloc(MAXPATHLEN);
     strcpy(dirname, dir_name);

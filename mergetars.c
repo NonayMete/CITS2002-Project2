@@ -1,7 +1,6 @@
 #include "mergetars.h"
 
 #define TEMPLATE "/tmp/mt-XXXXXX"
-#define TEMPLATE_LENGTH 14
 
 char *create_temp_directory() {
     char newdirname[] = TEMPLATE;
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
 
         //printf("temp directory: %s\n", temp_directory);
         expand_tar_file(input_file, temp_directory);
-        list_directory(temp_directory, temp_out_file);
+        merge_directories(temp_directory, temp_out_file);
         remove_directory(temp_directory);
         printf("\n");
     }
