@@ -1,15 +1,5 @@
 #include "mergetars.h"
 
-#define TEMPLATE "/tmp/mt-XXXXXX"
-
-char *create_temp_directory() {
-    char newdirname[] = TEMPLATE;
-    mkdtemp(newdirname);
-    printf("Created temp directory: %s\n", newdirname);
-    char *name = newdirname;
-    return name;
-}
-
     //expand tar files into temp directories
     //find and store info about all files inside tars
     //create new temp file and merge everything

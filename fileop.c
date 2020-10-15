@@ -1,5 +1,15 @@
 char *progname;
 
+#define TEMPLATE "/tmp/mt-XXXXXX"
+//creates and outputs temp directory with specified TEMPLATE
+char *create_temp_directory() {
+    char newdirname[] = TEMPLATE;
+    mkdtemp(newdirname);
+    printf("Created temp directory: %s\n", newdirname);
+    char *name = newdirname;
+    return name;
+}
+
 //moves file or directory to somewhere else
 void move_file(char *in_file, char *out_file) {
     char *infile = malloc(MAXPATHLEN);
