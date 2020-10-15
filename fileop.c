@@ -4,10 +4,11 @@ char *progname;
 //creates and outputs temp directory with specified TEMPLATE
 char *create_temp_directory() {
     char newdirname[] = TEMPLATE;
+    char *tempdir = malloc(MAXPATHLEN);
     mkdtemp(newdirname);
-    printf("Created temp directory: %s\n", newdirname);
-    char *name = newdirname;
-    return name;
+    strcpy(tempdir, newdirname);
+    printf("Created temp directory: %s\n", tempdir);
+    return tempdir;
 }
 
 //moves file or directory to somewhere else
