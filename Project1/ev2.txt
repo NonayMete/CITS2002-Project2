@@ -1,9 +1,0 @@
-#
-# A single process computes (for multiple timequanta,
-# alternating between the CPU and the Ready queue), then exits
-#
-1	compute		2100
-1	exit
-#
-# with:		./pipesim  thisfile  1000  2000
-#		timetaken 2135
