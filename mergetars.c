@@ -1,33 +1,31 @@
 #include "mergetars.h"
 
-    //expand tar files into temp directories
-    //find and store info about all files inside tars
-    //create new temp file and merge everything
-    //turn new file into tar
-    //delete all temp files.
-
 int main(int argc, char *argv[])
 {
     //Check command line arguments
-    if (argc < 3) {
+    if (argc < 3)
+    {
         printf("Incorrect arguments: too few arguments given\n");
         exit(EXIT_FAILURE);
     }
-    for(int i=0; i < argc; i++) {
-        if(strlen(argv[i]) >= MAXPATHLEN) {
+    for (int i = 0; i < argc; i++)
+    {
+        if (strlen(argv[i]) >= MAXPATHLEN)
+        {
             printf("Error path name too long.");
             exit(EXIT_FAILURE);
         }
     }
     char *output_tar_file = malloc(MAXPATHLEN);
-    strcpy(output_tar_file, argv[argc-1]);
+    strcpy(output_tar_file, argv[argc - 1]);
 
     //create a temporary file to merge everything into
     char *temp_out_file = malloc(MAXPATHLEN);
     strcpy(temp_out_file, create_temp_directory());
 
-    //loop through all 
-    for(int i = 1; i < argc-1; i++) {
+    //loop through all
+    for (int i = 1; i < argc - 1; i++)
+    {
         char *input_file = malloc(MAXPATHLEN);
         strcpy(input_file, argv[i]);
         //printf("input_file: %s\n", input_file);
@@ -43,8 +41,5 @@ int main(int argc, char *argv[])
 
     create_tar_file(temp_out_file, output_tar_file);
     remove_directory(temp_out_file);
-    cleanup();
     return 0;
 }
-
-
