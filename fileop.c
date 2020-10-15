@@ -69,6 +69,11 @@ void file_attributes(char *filename) {
 //     closedir(dirp);
 // }
 
+//compares two files and outputs which one should take priority
+char *compare_files(char *file1_, char *file2_) {
+    
+}
+
 void merge_directories(char *dir_name, char *out_file)
 {
     char *dirname = malloc(MAXPATHLEN);
@@ -76,7 +81,7 @@ void merge_directories(char *dir_name, char *out_file)
     char *outfile = malloc(MAXPATHLEN);
     strcpy(outfile, out_file);
     printf("Reading directory: %s\n", dirname);
-    char  fullpath[MAXPATHLEN];
+    char fullpath[MAXPATHLEN];
     DIR *dirp;
     struct dirent *dp;
 
@@ -87,8 +92,8 @@ void merge_directories(char *dir_name, char *out_file)
     }
 
     while((dp = readdir(dirp)) != NULL) {
-        struct stat  stat_buffer;
-        sprintf(fullpath, "%s/%s", dirname, dp->d_name );
+        struct stat stat_buffer;
+        sprintf(fullpath, "%s/%s", dirname, dp->d_name);
         if(!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, "..")) {
             continue;
         }
@@ -104,7 +109,21 @@ void merge_directories(char *dir_name, char *out_file)
         else {
             printf( "%s is unknown!\n", fullpath );
         }
-        move_file(fullpath, outfile);
+
+        //check if file exists
+        char checkfile[MAXPATHLEN];
+        sprintf(checkfile, "%s/%s", outfile, dp->d_name);
+        printf("checkfile: %s\n", checkfile);
+        if(access(checkfile, F_OK) != 0) {
+            //if not move the file/directory there
+             move_file(fullpath, outfile);
+        } else { 
+            //if it does exist then preform checks to see which one wins
+            printf("%s already exists not moving\n", checkfile);
+            compare_files();
+        }
+
+
 
     }
     closedir(dirp);
