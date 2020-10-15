@@ -39,20 +39,16 @@ void move_file(char *in_file, char *out_file) {
 
 struct stat file_attributes(char *filename) {
     struct stat stat_buffer;
-    //printf("testing attributes of: %s\n", filename);
+    printf("testing attributes of: %s\n", filename);
     if(stat(filename, &stat_buffer) != 0) { // can we 'stat' the file's attributes?
         perror( progname );
         exit(EXIT_FAILURE);
     }
     else if(S_ISREG(stat_buffer.st_mode)) {
         // printf( "%s is a regular file\n", filename );
-        // printf( "is %i bytes long\n", (int)stat_buffer.st_size );
-        // printf( "and was last modified on %i\n", (int)stat_buffer.st_mtime);
-
-        // printf( "which was %s", ctime( &stat_buffer.st_mtime) );
-    }
-    else if( S_ISDIR( stat_buffer.st_mode )) {
-            //printf( "%s is a directory\n", filename );
+         printf( "is %i bytes long\n", (int)stat_buffer.st_size );
+         printf( "and was last modified on %i\n", (int)stat_buffer.st_mtime);
+         printf( "which was %s\n", ctime( &stat_buffer.st_mtime) );
     }
     return stat_buffer;
 }
@@ -60,40 +56,28 @@ struct stat file_attributes(char *filename) {
 
 //compares two files and outputs which one should take priority
 char *compare_files(char *file1_, char *file2_) {
+    printf("checking attributes\n");
     struct stat file1 = file_attributes(file1_);
     struct stat file2 = file_attributes(file2_);
-    if(ctime(&file1.st_mtime) > ctime(&file2.st_mtime)) {
+    if((int)file1.st_mtime > (int)file2.st_mtime) {
+        printf("%s is newer\n", file1_);
         return file1_;
-    } else if(ctime(&file1.st_mtime) < ctime(&file2.st_mtime)) {
+    } else if((int)file1.st_mtime < (int)file2.st_mtime) {
+        printf("%s is newer\n", file2_);
         return file2_;
     }
 
     if((int)file1.st_size > (int)file2.st_size) {
+        printf("%s is bigger\n", file1_);
         return file1_;
     } else if ((int)file1.st_size < (int)file2.st_size) {
+        printf("%s is bigger\n", file2_);
         return file2_;
     }
 
-    return file1_;
+    printf("%s it is then\n", file2_);
+    return file2_;
 }
-
-// void list_directory(char *dirname)
-// {
-//     DIR *dirp;
-//     struct dirent *dp;
-
-//     dirp = opendir(dirname);
-//     if(dirp == NULL) {
-//         perror( progname );
-//         exit(EXIT_FAILURE);
-//     }
-//     printf("testes\n");
-//     while((dp = readdir(dirp)) != NULL) {  
-//         printf( "%s\n", dp->d_name );
-//     }
-//     closedir(dirp);
-// }
-
 
 void merge_directories(char *dir_name, char *out_file, char *parent_file)
 {
@@ -154,7 +138,7 @@ void merge_directories(char *dir_name, char *out_file, char *parent_file)
                 move_file(fullpath, newfile);
             } else { 
                 //if it does exist then preform checks to see which one wins
-                printf("%s already exists not moving\n", checkfile);
+                //printf("%s already exists not moving\n", checkfile);
                 char *pref_file = malloc(MAXPATHLEN);
                 pref_file = compare_files(checkfile, fullpath);
                 move_file(pref_file, newfile);

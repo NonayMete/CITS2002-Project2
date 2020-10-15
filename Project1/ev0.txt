@@ -5,3 +5,4 @@
 #
 # with:		./pipesim  thisfile  1000  2000
 #		timetaken 5
+please work
