@@ -7,7 +7,7 @@
 // Takes a number of input tar or tar.gz files and merges them based on 
 // last modified time and size. Produces merged output tar file 'output_tarfile'
 //
-#define _POSIX_C_SOURCE 200809L
+#define _POSIX_C_SOURCE 200809L //Required for 'mkdtemp' to compile
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +17,9 @@
 #include <sys/types.h> 
 #include <sys/wait.h>
 #include <sys/param.h>
-#include  <sys/stat.h>
-#include  <time.h>
-#include  <dirent.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <dirent.h>
 
 #include "fileop.c"
 #include "tarop.c"

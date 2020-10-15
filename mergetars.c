@@ -23,23 +23,28 @@ int main(int argc, char *argv[])
     char *temp_out_file = malloc(MAXPATHLEN);
     strcpy(temp_out_file, create_temp_directory());
 
-    //loop through all
+    //loop through all input tar files
     for (int i = 1; i < argc - 1; i++)
     {
         char *input_file = malloc(MAXPATHLEN);
         strcpy(input_file, argv[i]);
-        //printf("input_file: %s\n", input_file);
+        
+        //create a temp directory to expand tar file into 
         char *temp_directory = malloc(MAXPATHLEN);
         strcpy(temp_directory, create_temp_directory());
 
-        //printf("temp directory: %s\n", temp_directory);
+        //expand the tar file and merge it into output file
         expand_tar_file(input_file, temp_directory);
         merge_directories(temp_directory, temp_out_file, "");
+
+        //remove temporary directory
         remove_directory(temp_directory);
         printf("\n");
     }
 
+    //create output tar file from temperory output dir
     create_tar_file(temp_out_file, output_tar_file);
+    //delete last temporary directory
     remove_directory(temp_out_file);
     return 0;
 }
