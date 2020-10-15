@@ -6,12 +6,7 @@ int cleanup() {
 
 void remove_directory(char* d) {
     char dir[MAXPATHLEN];
-    int i = 0;
-    while(d[i] != '\0') {
-        dir[i] = d[i];
-        i++;
-    }
-    
+    strcpy(dir, d);
     pid_t pid = fork();
     if(pid == -1) {
         printf("didn't fork, error occured\n");
