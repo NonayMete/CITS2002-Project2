@@ -43,9 +43,6 @@ int main(int argc, char *argv[])
 
     create_tar_file(temp_out_file, output_tar_file);
     remove_directory(temp_out_file);
-    //list_directory("/tmp/");
-    // create_tar_file(input_file, output_tarfile);
-    // remove_directory(output_tarfile);
     cleanup();
     return 0;
 }

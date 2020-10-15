@@ -23,7 +23,7 @@ void move_file(char *in_file, char *out_file) {
         exit(EXIT_FAILURE);
     } else if(pid == 0) {
         //printf("Moving file %s to %s\n", infile, outfile);
-        char *args[] = {"mv", "-v", infile, outfile,  NULL};
+        char *args[] = {"mv", infile, outfile,  NULL};
         //need to check 'z'
         execvp(args[0], args);
         exit(EXIT_SUCCESS);
@@ -38,20 +38,20 @@ void move_file(char *in_file, char *out_file) {
 
 struct stat file_attributes(char *filename) {
     struct stat stat_buffer;
-    printf("testing attributes of: %s\n", filename);
+    //printf("testing attributes of: %s\n", filename);
     if(stat(filename, &stat_buffer) != 0) { // can we 'stat' the file's attributes?
         perror( progname );
         exit(EXIT_FAILURE);
     }
     else if(S_ISREG(stat_buffer.st_mode)) {
-        printf( "%s is a regular file\n", filename );
-        printf( "is %i bytes long\n", (int)stat_buffer.st_size );
-        printf( "and was last modified on %i\n", (int)stat_buffer.st_mtime);
+        // printf( "%s is a regular file\n", filename );
+        // printf( "is %i bytes long\n", (int)stat_buffer.st_size );
+        // printf( "and was last modified on %i\n", (int)stat_buffer.st_mtime);
 
-        printf( "which was %s", ctime( &stat_buffer.st_mtime) );
+        // printf( "which was %s", ctime( &stat_buffer.st_mtime) );
     }
     else if( S_ISDIR( stat_buffer.st_mode )) {
-            printf( "%s is a directory\n", filename );
+            //printf( "%s is a directory\n", filename );
     }
     return stat_buffer;
 }
@@ -124,7 +124,7 @@ void merge_directories(char *dir_name, char *out_file, char *parent_file)
              perror( progname );
         }
         else if( S_ISDIR( stat_buffer.st_mode )) {
-            printf( "%s is a directory\n", fullpath );
+            //printf( "%s is a directory\n", fullpath );
             char newdir[MAXPATHLEN];
             sprintf(newdir, "%s/%s%s", outfile, parent_file, dp->d_name);
             DIR *dir = opendir(newdir);
